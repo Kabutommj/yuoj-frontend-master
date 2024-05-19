@@ -1,9 +1,11 @@
 <template>
   <div class="layout-demo">
     <a-layout style="height: 400px">
-      <a-layout-header>比赛题目</a-layout-header>
+      <a-layout-header>qit编程挑战赛</a-layout-header>
       <a-layout-content>
         比赛详细内容
+        <br />
+        1317杯
         <a-col :flex="1">
           <a-countdown
             title="Milliseconds"
@@ -67,7 +69,7 @@ const toQuestionListPage = () => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: var(--color-white);
+  color: #000000;
   font-size: 16px;
   font-stretch: condensed;
   text-align: center;
@@ -76,15 +78,15 @@ const toQuestionListPage = () => {
 .layout-demo :deep(.arco-layout-header),
 .layout-demo :deep(.arco-layout-footer) {
   height: 64px;
-  background-color: #444444;
+  background-color: #ffffff;
 }
 
 .layout-demo :deep(.arco-layout-sider) {
   width: 206px;
-  background-color: #42b983;
+  background-color: #ffffff;
 }
 
 .layout-demo :deep(.arco-layout-content) {
-  background-color: rgb(var(--arcoblue-6));
+  background-color: #ffffff;
 }
 </style>

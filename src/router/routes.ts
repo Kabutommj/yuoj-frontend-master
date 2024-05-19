@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/ExampleView.vue";
-import UserLayout from "@/layouts/UserLayout.vue";   
+import UserLayout from "@/layouts/UserLayout.vue";
 import UserLoginView from "@/views/user/UserLoginView.vue";
 import UserRegisterView from "@/views/user/UserRegisterView.vue";
 import MatchContextView from "@/views/MatchContext.vue";
@@ -14,7 +14,8 @@ import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
 import QuestionsView from "@/views/question/QuestionsView.vue";
 import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
 import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
-
+import AddMatchView from "@/views/macth/AddMatchView.vue";
+import ManageMatchView from "@/views/macth/ManageMatchView.vue";
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/user",
@@ -70,6 +71,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: "创建题目",
     component: AddQuestionView,
     meta: {
+      hideInMenu: true,
       access: ACCESS_ENUM.ADMIN,
     },
   },
@@ -86,6 +88,23 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/manage/question/",
     name: "管理题目",
     component: ManageQuestionView,
+    meta: {
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/match/add",
+    name: "创建赛事",
+    component: AddMatchView,
+    meta: {
+      hideInMenu: true,
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/manage/match/",
+    name: "管理赛事",
+    component: ManageMatchView,
     meta: {
       access: ACCESS_ENUM.ADMIN,
     },

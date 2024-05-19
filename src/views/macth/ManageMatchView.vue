@@ -1,6 +1,7 @@
 <template>
-  <div id="manageQuestionView">
-    <a-button type="primary" @click="toNewQuestion"> 新建题目 </a-button>
+  <div id="questionsView">
+    <a-button @click="toAddMatch" type="primary">创建赛事</a-button>
+    <a-divider size="0" />
     <a-table
       :ref="tableRef"
       :columns="columns"
@@ -13,10 +14,28 @@
       }"
       @page-change="onPageChange"
     >
+      <template #tags="{ record }">
+        <a-space wrap>
+          <a-tag v-for="(tag, index) of record.tags" :key="index" color="green"
+            >{{ tag }}
+          </a-tag>
+        </a-space>
+      </template>
+      <template #acceptedRate="{ record }">
+        {{
+          `${
+            record.submitNum ? record.acceptedNum / record.submitNum : "0"
+          }% (${record.acceptedNum}/${record.submitNum})`
+        }}
+      </template>
+      <template #createTime="{ record }">
+        {{ moment(record.createTime).format("YYYY-MM-DD") }}
+      </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="doUpdate(record)"> 修改</a-button>
-          <a-button status="danger" @click="doDelete(record)">删除</a-button>
+          <a-button type="primary" @click="toQuestionPage(record)">
+            查看比赛
+          </a-button>
         </a-space>
       </template>
     </a-table>
@@ -29,22 +48,26 @@ import {
   Page_Question_,
   Question,
   QuestionControllerService,
+  QuestionQueryRequest,
 } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import * as querystring from "querystring";
 import { useRouter } from "vue-router";
+import moment from "moment";
 
 const tableRef = ref();
 
 const dataList = ref([]);
 const total = ref(0);
-const searchParams = ref({
-  pageSize: 10,
+const searchParams = ref<QuestionQueryRequest>({
+  title: "",
+  tags: [],
+  pageSize: 8,
   current: 1,
 });
 
 const loadData = async () => {
-  const res = await QuestionControllerService.listQuestionByPageUsingPost(
+  const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
     searchParams.value
   );
   if (res.code === 0) {
@@ -73,51 +96,30 @@ onMounted(() => {
 
 const columns = [
   {
-    title: "id",
+    title: "比赛号",
     dataIndex: "id",
   },
   {
-    title: "标题",
+    title: "赛事名称",
     dataIndex: "title",
   },
   {
-    title: "内容",
-    dataIndex: "content",
+    title: "简介",
+    slotName: "tags",
   },
   {
-    title: "标签",
-    dataIndex: "tags",
+    title: "开始时间",
+    slotName: "createTime",
   },
   {
-    title: "答案",
-    dataIndex: "answer",
+    title: "结束时间",
+    slotName: "createTime",
   },
   {
-    title: "提交数",
-    dataIndex: "submitNum",
+    title: "创建人",
+    slotName: "tags",
   },
   {
-    title: "通过数",
-    dataIndex: "acceptedNum",
-  },
-  {
-    title: "判题配置",
-    dataIndex: "judgeConfig",
-  },
-  {
-    title: "判题用例",
-    dataIndex: "judgeCase",
-  },
-  {
-    title: "用户id",
-    dataIndex: "userId",
-  },
-  {
-    title: "创建时间",
-    dataIndex: "createTime",
-  },
-  {
-    title: "操作",
     slotName: "optional",
   },
 ];
@@ -129,37 +131,37 @@ const onPageChange = (page: number) => {
   };
 };
 
-const doDelete = async (question: Question) => {
-  const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.id,
-  });
-  if (res.code === 0) {
-    message.success("删除成功");
-    loadData();
-  } else {
-    message.error("删除失败");
-  }
-};
-
 const router = useRouter();
 
-const doUpdate = (question: Question) => {
+/**
+ * 跳转到做题页面
+ * @param question
+ */
+const toQuestionPage = (question: Question) => {
   router.push({
-    path: "/update/question",
-    query: {
-      id: question.id,
-    },
+    path: `/view/matchcontext/${question.id}`,
   });
 };
-
-const toNewQuestion = () => {
+const toAddMatch = () => {
   router.push({
-    path: "/add/question",
+    path: "/match/add",
   });
+};
+/**
+ * 确认搜索，重新加载数据
+ */
+const doSubmit = () => {
+  // 这里需要重置搜索页号
+  searchParams.value = {
+    ...searchParams.value,
+    current: 1,
+  };
 };
 </script>
 
 <style scoped>
-#manageQuestionView {
+#questionsView {
+  max-width: 1280px;
+  margin: 0 auto;
 }
 </style>
