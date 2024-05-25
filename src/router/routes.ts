@@ -7,7 +7,9 @@ import MatchContextView from "@/views/MatchContext.vue";
 import QuestionsList from "@/views/question/QuestionsList.vue";
 import RankView from "@/views/question/RankView.vue";
 import AdminView from "@/views/AdminView.vue";
-import NoAuthView from "@/views/NoAuthView.vue";
+import MatchRankView from "@/views/macth/MatchRankView.vue";
+import StrongRankView from "@/views/StrongRankView.vue";
+// import NoAuthView from "@/views/NoAuthView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
 import AddQuestionView from "@/views/question/AddQuestionView.vue";
 import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
@@ -47,6 +49,7 @@ export const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
     },
   },
+
   {
     path: "/question_submit/:id",
     name: "浏览题目提交",
@@ -115,6 +118,24 @@ export const routes: Array<RouteRecordRaw> = [
     component: QuestionsView,
   },
   {
+    path: "/view/matchrank/:id",
+    name: "天梯榜",
+    component: MatchRankView,
+    props: true,
+    meta: {
+      access: ACCESS_ENUM.USER,
+    },
+  },
+  {
+    path: "/view/Strongrank/:id",
+    name: "大神榜",
+    component: StrongRankView,
+    props: true,
+    meta: {
+      access: ACCESS_ENUM.USER,
+    },
+  },
+  {
     path: "/questionList/:id",
     name: "比赛题目列表",
     component: QuestionsList,
@@ -140,14 +161,14 @@ export const routes: Array<RouteRecordRaw> = [
   //     hideInMenu: true,
   //   },
   // },
-  {
-    path: "/noAuth",
-    name: "无权限",
-    component: NoAuthView,
-    meta: {
-      hideInMenu: true,
-    },
-  },
+  // {
+  //   path: "/noAuth",
+  //   name: "无权限",
+  //   component: NoAuthView,
+  //   meta: {
+  //     hideInMenu: true,
+  //   },
+  // },
   // {
   //   path: "/admin",
   //   name: "管理员可见",

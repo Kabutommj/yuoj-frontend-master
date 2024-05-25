@@ -105,29 +105,47 @@ const columns = [
   {
     title: "比赛号",
     dataIndex: "id",
+    align: "center",
+    width: 100,
+    sorter: true,
   },
   {
     title: "赛事名称",
     dataIndex: "title",
+    align: "center",
+    width: 150,
+    sorter: true,
   },
   {
     title: "简介",
     slotName: "tags",
+    align: "center",
+    width: 200,
   },
   {
     title: "开始时间",
     slotName: "createTime",
+    align: "center",
+    width: 150,
+    sorter: true,
   },
   {
     title: "结束时间",
     slotName: "createTime",
+    align: "center",
+    width: 150,
+    sorter: true,
   },
   {
     title: "创建人",
     slotName: "tags",
+    align: "center",
+    width: 150,
   },
   {
     slotName: "optional",
+    align: "center",
+    width: 150,
   },
 ];
 
