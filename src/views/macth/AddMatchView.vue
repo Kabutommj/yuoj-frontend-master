@@ -1,6 +1,6 @@
 <template>
   <div id="addQuestionView">
-    <h2>创建题目</h2>
+    <h2>创建比赛</h2>
     <a-form :model="form" label-align="left">
       <a-form-item label="赛事名称">
         <a-input v-model="form.competitionName" placeholder="请输入赛事名称" />

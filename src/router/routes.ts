@@ -18,6 +18,7 @@ import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
 import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
 import AddMatchView from "@/views/macth/AddMatchView.vue";
 import ManageMatchView from "@/views/macth/ManageMatchView.vue";
+import MatchList from "@/views/macth/MatchList.vue";
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/user",
@@ -41,11 +42,11 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/view/matchcontext/:id",
-    name: "赛事列表",
+    name: "赛事详情",
     component: MatchContextView,
     props: true,
     meta: {
-      access: ACCESS_ENUM.USER,
+      // access: ACCESS_ENUM.USER,
       hideInMenu: true,
     },
   },
@@ -109,13 +110,14 @@ export const routes: Array<RouteRecordRaw> = [
     name: "管理赛事",
     component: ManageMatchView,
     meta: {
+      hideInMenu: false,
       access: ACCESS_ENUM.ADMIN,
     },
   },
   {
     path: "/",
     name: "主页",
-    component: QuestionsView,
+    component:MatchList,
   },
   {
     path: "/view/matchrank/:id",
