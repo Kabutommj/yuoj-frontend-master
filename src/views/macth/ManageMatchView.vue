@@ -1,35 +1,23 @@
 <template>
   <div id="questionsView">
     <a-button @click="toAddMatch" type="primary">创建赛事</a-button>
+    <a-form :model="searchParams" layout="inline">
+      <!-- Form content -->
+    </a-form>
     <a-divider size="0" />
     <a-table
-      :ref="tableRef"
-      :columns="columns"
-      :data="dataList"
-      :pagination="{
-        showTotal: true,
-        pageSize: searchParams.pageSize,
-        current: searchParams.current,
-        total,
-      }"
-      @page-change="onPageChange"
+        :columns="columns"
+        :data="dataList"
+        @page-change="onPageChange"
     >
-      <template #tags="{ record }">
-        <a-space wrap>
-          <a-tag v-for="(tag, index) of record.tags" :key="index" color="green"
-            >{{ tag }}
-          </a-tag>
-        </a-space>
+      <template #competitionContext="{ record }">
+        {{ record.competitionContext }}
       </template>
-      <template #acceptedRate="{ record }">
-        {{
-          `${
-            record.submitNum ? record.acceptedNum / record.submitNum : "0"
-          }% (${record.acceptedNum}/${record.submitNum})`
-        }}
+      <template #competitionStartTime="{ record }">
+        {{ moment(record.competitionStartTime).format("YYYY-MM-DD HH:mm:ss") }}
       </template>
-      <template #createTime="{ record }">
-        {{ moment(record.createTime).format("YYYY-MM-DD") }}
+      <template #competitionEndTime="{ record }">
+        {{ moment(record.competitionEndTime).format("YYYY-MM-DD HH:mm:ss") }}
       </template>
       <template #optional="{ record }">
         <a-space>
@@ -45,6 +33,8 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from "vue";
 import {
+  type Competition,
+  CompetitionControllerService,
   Page_Question_,
   Question,
   QuestionControllerService,
@@ -67,12 +57,10 @@ const searchParams = ref<QuestionQueryRequest>({
 });
 
 const loadData = async () => {
-  const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
-    searchParams.value
+  const res = await CompetitionControllerService.getCompetitionListUsingGet(
   );
   if (res.code === 0) {
-    dataList.value = res.data.records;
-    total.value = res.data.total;
+    dataList.value = res.data
   } else {
     message.error("加载失败，" + res.message);
   }
@@ -97,30 +85,48 @@ onMounted(() => {
 const columns = [
   {
     title: "比赛号",
-    dataIndex: "id",
+    dataIndex: "competitionId",
+    align: "center",
+    width: 100,
+    sorter: true,
   },
   {
     title: "赛事名称",
-    dataIndex: "title",
+    dataIndex: "competitionName",
+    align: "center",
+    width: 150,
+    sorter: true,
   },
   {
     title: "简介",
-    slotName: "tags",
+    slotName: "competitionContext",
+    align: "center",
+    width: 200,
   },
   {
     title: "开始时间",
-    slotName: "createTime",
+    slotName: "competitionStartTime",
+    align: "center",
+    width: 150,
+    sorter: true,
   },
   {
     title: "结束时间",
     slotName: "createTime",
+    align: "center",
+    width: 150,
+    sorter: true,
   },
   {
     title: "创建人",
     slotName: "tags",
+    align: "center",
+    width: 150,
   },
   {
     slotName: "optional",
+    align: "center",
+    width: 150,
   },
 ];
 
@@ -131,22 +137,24 @@ const onPageChange = (page: number) => {
   };
 };
 
+const toAddMatch = () => {
+  router.push({
+    path: "/match/add",
+  });
+};
+
 const router = useRouter();
 
 /**
  * 跳转到做题页面
  * @param question
  */
-const toQuestionPage = (question: Question) => {
+const toQuestionPage = (question:Competition) => {
   router.push({
-    path: `/view/matchcontext/${question.id}`,
+    path: `/view/matchcontext/${question.competitionId}`,
   });
 };
-const toAddMatch = () => {
-  router.push({
-    path: "/match/add",
-  });
-};
+
 /**
  * 确认搜索，重新加载数据
  */

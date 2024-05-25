@@ -13,7 +13,7 @@ import StrongRankView from "@/views/StrongRankView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
 import AddQuestionView from "@/views/question/AddQuestionView.vue";
 import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
-import QuestionsView from "@/views/question/QuestionsView.vue";
+import QuestionsView from "@/views/macth/MatchList.vue";
 import QuestionSubmitView from "@/views/question/QuestionSubmitView.vue";
 import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
 import AddMatchView from "@/views/macth/AddMatchView.vue";
