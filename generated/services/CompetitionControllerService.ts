@@ -5,6 +5,7 @@
 import type { BaseResponse_boolean_ } from '../models/BaseResponse_boolean_';
 import type { BaseResponse_Competition_ } from '../models/BaseResponse_Competition_';
 import type { BaseResponse_List_Competition_ } from '../models/BaseResponse_List_Competition_';
+import type { Competition } from '../models/Competition';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -14,38 +15,18 @@ export class CompetitionControllerService {
 
     /**
      * createCompetition
-     * @param competitionContext 
-     * @param competitionCreatedBy 
-     * @param competitionDuration 
-     * @param competitionId 
-     * @param competitionName 
-     * @param competitionStartTime 
-     * @param isdelete 
+     * @param competition competition
      * @returns BaseResponse_Competition_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static createCompetitionUsingPost(
-competitionContext?: string,
-competitionCreatedBy?: number,
-competitionDuration?: number,
-competitionId?: number,
-competitionName?: string,
-competitionStartTime?: string,
-isdelete?: string,
+competition: Competition,
 ): CancelablePromise<BaseResponse_Competition_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/competition/createCompetition',
-            query: {
-                'competitionContext': competitionContext,
-                'competitionCreatedBy': competitionCreatedBy,
-                'competitionDuration': competitionDuration,
-                'competitionId': competitionId,
-                'competitionName': competitionName,
-                'competitionStartTime': competitionStartTime,
-                'isdelete': isdelete,
-            },
+            body: competition,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -119,38 +100,18 @@ id?: number,
 
     /**
      * updateCompetition
-     * @param competitionContext 
-     * @param competitionCreatedBy 
-     * @param competitionDuration 
-     * @param competitionId 
-     * @param competitionName 
-     * @param competitionStartTime 
-     * @param isdelete 
+     * @param competition competition
      * @returns BaseResponse_Competition_ OK
      * @returns any Created
      * @throws ApiError
      */
     public static updateCompetitionUsingPost(
-competitionContext?: string,
-competitionCreatedBy?: number,
-competitionDuration?: number,
-competitionId?: number,
-competitionName?: string,
-competitionStartTime?: string,
-isdelete?: string,
+competition: Competition,
 ): CancelablePromise<BaseResponse_Competition_ | any> {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/competition/updateCompetition',
-            query: {
-                'competitionContext': competitionContext,
-                'competitionCreatedBy': competitionCreatedBy,
-                'competitionDuration': competitionDuration,
-                'competitionId': competitionId,
-                'competitionName': competitionName,
-                'competitionStartTime': competitionStartTime,
-                'isdelete': isdelete,
-            },
+            body: competition,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

@@ -11,6 +11,7 @@ export type { BaseResponse_boolean_ } from './models/BaseResponse_boolean_';
 export type { BaseResponse_Competition_ } from './models/BaseResponse_Competition_';
 export type { BaseResponse_int_ } from './models/BaseResponse_int_';
 export type { BaseResponse_List_Competition_ } from './models/BaseResponse_List_Competition_';
+export type { BaseResponse_List_Question_ } from './models/BaseResponse_List_Question_';
 export type { BaseResponse_LoginUserVO_ } from './models/BaseResponse_LoginUserVO_';
 export type { BaseResponse_long_ } from './models/BaseResponse_long_';
 export type { BaseResponse_Page_PostVO_ } from './models/BaseResponse_Page_PostVO_';

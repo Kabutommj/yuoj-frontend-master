@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseResponse_boolean_ } from '../models/BaseResponse_boolean_';
+import type { BaseResponse_List_Question_ } from '../models/BaseResponse_List_Question_';
 import type { BaseResponse_long_ } from '../models/BaseResponse_long_';
 import type { BaseResponse_Page_Question_ } from '../models/BaseResponse_Page_Question_';
 import type { BaseResponse_Page_QuestionSubmitVO_ } from '../models/BaseResponse_Page_QuestionSubmitVO_';
@@ -37,6 +38,23 @@ questionAddRequest: QuestionAddRequest,
             method: 'POST',
             url: '/api/question/add',
             body: questionAddRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * getAllQuestion
+     * @returns BaseResponse_List_Question_ OK
+     * @throws ApiError
+     */
+    public static getAllQuestionUsingGet(): CancelablePromise<BaseResponse_List_Question_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/question/all',
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

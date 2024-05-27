@@ -19,6 +19,19 @@
       <a-form-item label="比赛时长 (分钟)">
         <a-input-number v-model="form.competitionDuration" min="1" />
       </a-form-item>
+      <a-form-item label="选择题目">
+        <a-transfer
+            show-search
+            :data="data"
+            :default-value="targetKeys"
+            :source-input-search-props="{
+      placeholder:'source item search'
+    }"
+            :target-input-search-props="{
+      placeholder:'target item search'
+    }"
+        />
+      </a-form-item>
       <a-form-item>
         <a-button type="primary" style="min-width: 200px" @click="doSubmit">
           提交
@@ -44,11 +57,14 @@ const form = ref({
   competitionDuration: 1
 });
 
+const data=ref([])
+const targetKeys = ref([])
 onMounted(() => {
   // 如果是更新页面，则加载现有数据
   if (route.path.includes("update") && route.query.id) {
     loadData(route.query.id);
   }
+  loadSubject()
 });
 
 const loadData = async (id) => {
@@ -59,20 +75,36 @@ const loadData = async (id) => {
     message.error("加载失败：" + res.message);
   }
 };
+const loadSubject = async()=>{
 
+  console.log('1')
+  const res = await QuestionControllerService.getAllQuestionUsingGet();
+  data.value = res.data?.map(item=>({
+    key:item.id,
+    value: item.id,
+    label: item.title
+  }))
+  console.log(data.value)
+}
 const doSubmit = async () => {
-  let res;
-  if (route.path.includes("update")) {
-    res = await CompetitionControllerService.updateCompetitionUsingPost(form.value);
-  } else {
-    res = await CompetitionControllerService.createCompetitionUsingPost(form.value);
-  }
-  if (res.code === 0) {
-    message.success(route.path.includes("update") ? "更新成功" : "创建成功");
-    // router.push("/wherever-you-need");
-  } else {
-    message.error("操作失败：" + res.message);
-  }
+  console.log(targetKeys)
+  // const rightData = data.value.filter(item => {
+  //   console.log(targetKeys.value)
+  //   console.log(item)
+  // });
+  // console.log(rightData);  // 可以在这里处理或显示右侧数据
+  // let res;
+  // if (route.path.includes("update")) {
+  //   res = await CompetitionControllerService.updateCompetitionUsingPost(form.value);
+  // } else {
+  //   res = await CompetitionControllerService.createCompetitionUsingPost(form.value);
+  // }
+  // if (res.code === 0) {
+  //   message.success(route.path.includes("update") ? "更新成功" : "创建成功");
+  //   // router.push("/wherever-you-need");
+  // } else {
+  //   message.error("操作失败：" + res.message);
+  // }
 };
 </script>
 

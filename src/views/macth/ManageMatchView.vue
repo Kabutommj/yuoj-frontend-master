@@ -150,6 +150,7 @@ const router = useRouter();
  * @param question
  */
 const toQuestionPage = (question:Competition) => {
+  alert(question.competitionId)
   router.push({
     path: `/view/matchcontext/${question.competitionId}`,
   });
