@@ -21,6 +21,9 @@
         <a-button type="primary" html-type="submit" style="width: 120px">
           登录
         </a-button>
+        <a-button type="primary" @click="toRegister" style="width: 120px; margin-left: 30px">
+          注册
+        </a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -61,4 +64,15 @@ const handleSubmit = async () => {
     message.error("登陆失败，" + res.message);
   }
 };
+
+/**
+ * 用户注册
+ */
+const toRegister = () => {
+  router.push({
+    path: "/user/register",
+    replace: true,
+  });
+};
+
 </script>
