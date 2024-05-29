@@ -6,6 +6,8 @@
 
 <script setup>
 import { onMounted, ref, watchEffect } from "vue";
+import {CompetitionControllerService, CompetitionUserControllerService} from "../../generated";
+import message from "@arco-design/web-vue/es/message";
 
 const columns = [
   {
@@ -25,11 +27,26 @@ const columns = [
   },
 ];
 
-const data = ref([
-  { rank: 1, username: "user1", num: 100 },
-  { rank: 2, username: "user2", num: 95 },
-  { rank: 3, username: "user3", num: 90 },
-]);
+const data = ref([]);
+
+const loadData = async () => {
+  const res = await CompetitionUserControllerService.queryUserNameAndGameCountUsingGet();
+  if (res.code === 0) {
+    res.data.forEach(one => {
+      data.value.push({
+        rank: one.rank,
+        username: one.userName,
+        num: one.gameCount,
+      })
+    })
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
+
 </script>
 
 <style scoped>
