@@ -82,6 +82,7 @@ import {
 
 interface Props {
   id: string;
+  competitionid:string
 }
 
 const props = withDefaults(defineProps<Props>(), {

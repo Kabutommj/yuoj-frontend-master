@@ -58,6 +58,7 @@
 import { onMounted, ref, watchEffect } from "vue";
 import { defineProps, withDefaults } from "vue";
 import {
+  CompetitionControllerService, CompetitionQuestionControllerService,
   Page_Question_,
   Question,
   QuestionControllerService,
@@ -87,12 +88,11 @@ const searchParams = ref<QuestionQueryRequest>({
 });
 
 const loadData = async () => {
-  const res = await QuestionControllerService.listQuestionVoByPageUsingPost(
-    searchParams.value
+  const res = await CompetitionQuestionControllerService.queryCompetitionQuestionUsingGet(
+    props.id
   );
   if (res.code === 0) {
-    dataList.value = res.data.records;
-    total.value = res.data.total;
+    dataList.value = res.data;
   } else {
     message.error("加载失败，" + res.message);
   }
@@ -153,7 +153,7 @@ const router = useRouter();
  */
 const toQuestionPage = (question: Question) => {
   router.push({
-    path: `/view/question/${question.id}`,
+    path: `/view/question/${question.id}/${props.id}`,
   });
 };
 

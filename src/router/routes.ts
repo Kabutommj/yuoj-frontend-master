@@ -61,7 +61,7 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/view/question/:id",
+    path: "/view/question/:id/:competitionid",
     name: "在线做题",
     component: ViewQuestionView,
     props: true,
