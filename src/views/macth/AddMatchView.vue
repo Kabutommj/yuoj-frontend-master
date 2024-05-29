@@ -20,17 +20,9 @@
         <a-input-number v-model="form.competitionDuration" min="1" />
       </a-form-item>
       <a-form-item label="选择题目">
-        <a-transfer
-            show-search
-            :data="data"
-            :default-value="targetKeys"
-            :source-input-search-props="{
-      placeholder:'source item search'
-    }"
-            :target-input-search-props="{
-      placeholder:'target item search'
-    }"
-        />
+        <a-select v-model="targetKeys" :options="data" :style="{width:'360px'}" :max-tag-count="2" multiple>
+        </a-select>
+
       </a-form-item>
       <a-form-item>
         <a-button type="primary" style="min-width: 200px" @click="doSubmit">
@@ -46,8 +38,13 @@
 import { defineProps, ref, onMounted } from "vue";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter, useRoute } from "vue-router";
-import {CompetitionControllerService, QuestionControllerService} from "../../../generated";
-
+import {
+  CompetitionControllerService,
+  CompetitionQuestionControllerService,
+  QuestionControllerService
+} from "../../../generated";
+import {addCompetitionQuestionUsingPost} from 'generated/services/CompetitionQuestionControllerService';
+import type { JsonObject } from '../generated/models/JsonObject';
 const route = useRoute();
 const router = useRouter();
 const form = ref({
@@ -58,7 +55,7 @@ const form = ref({
 });
 
 const data=ref([])
-const targetKeys = ref([])
+const targetKeys = ref(['option1'])
 onMounted(() => {
   // 如果是更新页面，则加载现有数据
   if (route.path.includes("update") && route.query.id) {
@@ -87,25 +84,33 @@ const loadSubject = async()=>{
   console.log(data.value)
 }
 const doSubmit = async () => {
-  console.log(targetKeys)
-  // const rightData = data.value.filter(item => {
-  //   console.log(targetKeys.value)
-  //   console.log(item)
-  // });
-  // console.log(rightData);  // 可以在这里处理或显示右侧数据
-  // let res;
-  // if (route.path.includes("update")) {
-  //   res = await CompetitionControllerService.updateCompetitionUsingPost(form.value);
-  // } else {
-  //   res = await CompetitionControllerService.createCompetitionUsingPost(form.value);
-  // }
-  // if (res.code === 0) {
-  //   message.success(route.path.includes("update") ? "更新成功" : "创建成功");
-  //   // router.push("/wherever-you-need");
-  // } else {
-  //   message.error("操作失败：" + res.message);
-  // }
+
+  let res;
+  if (route.path.includes("update")) {
+    res = await CompetitionControllerService.updateCompetitionUsingPost(form.value);
+  } else {
+    res = await CompetitionControllerService.createCompetitionUsingPost(form.value);
+  }
+  if (res.code === 0) {
+    message.success(route.path.includes("update") ? "更新成功" : "创建成功");
+    console.log('id is',res.data.competitionId)
+    let questions:any = []
+    console.log(targetKeys.value)
+    targetKeys.value.forEach(item=>{
+      questions.push(item)
+    })
+    const requestData = {
+      gameId:res.data.competitionId,
+      questionList:questions
+    }
+    const ress = await CompetitionQuestionControllerService.addCompetitionQuestionUsingPost(requestData);
+    console.log("ress",ress)
+    // router.push("/wherever-you-need");
+  } else {
+    message.error("操作失败：" + res.message);
+  }
 };
+
 </script>
 
 

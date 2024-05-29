@@ -71,6 +71,13 @@ const formatDate = (date) => {
 const countdownValue = computed(() => {
   return new Date(data.value.competitionStartTime).getTime();
 });
+
+const toQuestionListPage = () => {
+  router.push({
+    path: `/questionList/${props.id}`,
+  });
+
+}
 </script>
 
 <style scoped>
