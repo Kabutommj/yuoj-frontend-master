@@ -19,6 +19,7 @@ import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
 import AddMatchView from "@/views/macth/AddMatchView.vue";
 import ManageMatchView from "@/views/macth/ManageMatchView.vue";
 import MatchList from "@/views/macth/MatchList.vue";
+import UserInfoView from "@/views/user/UserInfoView.vue";
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/user",
@@ -155,6 +156,15 @@ export const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
     },
   },
+  {
+    path: '/userInfo',
+    name: "UserInfo",
+    component: UserInfoView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+    }
+  }
   // {
   //   path: "/hide",
   //   name: "隐藏页面",

@@ -12,8 +12,8 @@
           disabled
         >
           <div class="title-bar">
-            <img class="logo" src="../assets/oj-logo.svg" />
-            <div class="title">牛平台</div>
+            <img class="logo" src="../assets/oj-logo.png" />
+            <div class="title">赛客</div>
           </div>
         </a-menu-item>
         <a-menu-item v-for="item in visibleRoutes" :key="item.path">
@@ -22,7 +22,7 @@
       </a-menu>
     </a-col>
     <a-col flex="100px">
-      <div>
+      <div @click="toUserInfoPage">
         {{ store.state.user?.loginUser?.userName ?? "未登录" }}
       </div>
     </a-col>
@@ -55,7 +55,9 @@ const visibleRoutes = computed(() => {
     return true;
   });
 });
-
+function toUserInfoPage() {
+  router.push("/userInfo")
+}
 // 默认主页
 const selectedKeys = ref(["/"]);
 

@@ -3,8 +3,8 @@
     <a-layout style="min-height: 100vh">
       <a-layout-header class="header">
         <a-space>
-          <img src="../assets/oj-logo.svg" class="logo" />
-          <div>牛 OJ</div>
+          <img src="../assets/oj-logo.png" class="logo" />
+          <div>赛客</div>
         </a-space>
       </a-layout-header>
       <a-layout-content class="content">
