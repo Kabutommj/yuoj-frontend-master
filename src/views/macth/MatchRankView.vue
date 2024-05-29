@@ -1,10 +1,10 @@
 <template>
   <a-card title="排行榜" style="width: 100%">
     <a-table :columns="columns" :data="data" pagination="false">
-      <template #customRender="{ text }">
-        <a-button type="primary" @click="redirectToDetails(text)"
-          >详情</a-button
-        >
+      <template #optional="{ record }">
+        <a-space>
+          <a-button type="primary" @click="redirectToDetails(record)"> 详情</a-button>
+        </a-space>
       </template>
     </a-table>
   </a-card>
@@ -12,16 +12,17 @@
 
 <script setup>
 import { onMounted, ref, watchEffect } from "vue";
-import { useRouter } from "vue-router"; // 假设你使用了 Vue Router
+import { useRouter } from "vue-router";
+import {CompetitionControllerService, CompetitionUserControllerService} from "../../../generated";
+import message from "@arco-design/web-vue/es/message"; // 假设你使用了 Vue Router
 
 const router = useRouter();
 
-function redirectToDetails(matchId) {
-  // 根据比赛 ID 构建详情页面的路由路径
-  const detailsPath = `/manage/match/`;
-
+function redirectToDetails(record) {
   // 使用 Vue Router 进行页面跳转
-  router.push(detailsPath);
+  router.push({
+    path: `/view/matchcontext/${record.gameId}`,
+  });
 }
 
 const columns = [
@@ -42,21 +43,33 @@ const columns = [
   },
   {
     title: "操作",
-    key: "action",
-    slots: { customRender: "customRender" },
+    slotName: "optional",
   },
 ];
 
-const data = ref([
-  { rank: 1, match_name: "1317杯", num: 100, action: "/match-details/1" },
-  {
-    rank: 2,
-    match_name: "全国高校计算机能力挑战赛",
-    num: 95,
-    action: "/match-details/1",
-  },
-  { rank: 3, match_name: "蓝桥杯", num: 90, action: "/match-details/1" },
-]);
+// action: "/match-details/1",
+const data = ref([]);
+
+const loadData = async () => {
+  const res = await CompetitionUserControllerService.queryGameAndUserCountUsingGet();
+  if (res.code === 0 ) {
+    res.data.forEach(one => {
+      data.value.push({
+        rank: one.rank,
+        match_name: one.gameName,
+        num: one.userCount,
+        gameId: one.gameId,
+      })
+    })
+  } else {
+    message.error("加载失败")
+  }
+};
+
+onMounted(() => {
+  loadData();
+});
+
 </script>
 
 <style scoped>

@@ -2,7 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BaseResponse_List_CompetitionQuestion_ } from '../models/BaseResponse_List_CompetitionQuestion_';
+import type { BaseResponse_List_Question_ } from '../models/BaseResponse_List_Question_';
 import type { BaseResponse_string_ } from '../models/BaseResponse_string_';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -36,12 +36,12 @@ jsonObject: Record<string, any>,
     /**
      * queryCompetitionQuestion
      * @param gameId gameId
-     * @returns BaseResponse_List_CompetitionQuestion_ OK
+     * @returns BaseResponse_List_Question_ OK
      * @throws ApiError
      */
     public static queryCompetitionQuestionUsingGet(
 gameId: string,
-): CancelablePromise<BaseResponse_List_CompetitionQuestion_> {
+): CancelablePromise<BaseResponse_List_Question_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/CompetitionQuestionController/queryCompetitionQuestion',
