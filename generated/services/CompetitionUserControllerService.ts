@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { BaseResponse_boolean_ } from '../models/BaseResponse_boolean_';
 import type { BaseResponse_List_GameAndUserCountVO_ } from '../models/BaseResponse_List_GameAndUserCountVO_';
 import type { BaseResponse_List_long_ } from '../models/BaseResponse_List_long_';
 import type { BaseResponse_List_UserNameAndGameCountVO_ } from '../models/BaseResponse_List_UserNameAndGameCountVO_';
@@ -26,6 +27,29 @@ gameId: number,
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/CompetitionUserController/addCompetitionUser',
+            query: {
+                'gameId': gameId,
+            },
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+
+    /**
+     * isBaoMing
+     * @param gameId gameId
+     * @returns BaseResponse_boolean_ OK
+     * @throws ApiError
+     */
+    public static isBaoMingUsingGet(
+gameId?: number,
+): CancelablePromise<BaseResponse_boolean_> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/CompetitionUserController/isBaoMing',
             query: {
                 'gameId': gameId,
             },

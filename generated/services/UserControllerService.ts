@@ -92,10 +92,10 @@ id?: number,
 
     /**
      * getLoginUser
-     * @returns BaseResponse_LoginUserVO_ OK
+     * @returns BaseResponse_User_ OK
      * @throws ApiError
      */
-    public static getLoginUserUsingGet(): CancelablePromise<BaseResponse_LoginUserVO_> {
+    public static getLoginUserUsingGet(): CancelablePromise<BaseResponse_User_> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/api/user/get/login',

@@ -25,10 +25,10 @@
         <a-button type="primary" v-if="!baomingRef.value" @click="baomingClick">
           报名
         </a-button>
-        <a-button type="primary" v-if="baomingRef.value" disabled>
+        <a-button type="primary" v-else disabled>
           已报名
         </a-button>
-        <a-button type="primary" @click="toQuestionListPage()">
+        <a-button type="primary" @click="toQuestionListPage">
           查看题目列表
         </a-button>
       </a-layout-footer>
@@ -36,12 +36,11 @@
   </div>
 </template>
 
-
 <script setup lang="ts">
-import {computed, defineProps, onMounted, ref, withDefaults} from "vue";
+import { computed, defineProps, onMounted, ref, withDefaults } from "vue";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
-import {CompetitionControllerService} from "../../generated";
+import { CompetitionControllerService, CompetitionUserControllerService } from "../../generated";
 import moment from "moment";
 
 interface Props {
@@ -51,20 +50,46 @@ const router = useRouter();
 const props = withDefaults(defineProps<Props>(), {
   id: () => "",
 });
-const data = ref({});
+const data = ref<any>({});
 const now = Date.now();
 const baomingRef = ref(false);
+
 const loadData = async () => {
   const res = await CompetitionControllerService.getCompetitionDetailUsingGet(Number(props.id));
-  data.value = res.data;
+  if (res.code === 0) {
+    data.value = res.data;
+  } else {
+    message.error(res.message);
+  }
+  await checkBaoMing();
 };
+
 onMounted(() => {
   loadData();
 });
 
 // Helper to format date
-const formatDate = (date) => {
+const formatDate = (date: string) => {
   return moment(date).format("YYYY-MM-DD HH:mm:ss");
+};
+
+const baomingClick = async () => {
+  const res = await CompetitionUserControllerService.addCompetitionUserUsingPost(props.id);
+  if (res.code === 0) {
+    message.success("报名成功！");
+    baomingRef.value = true;
+  } else {
+    message.error(res.message);
+  }
+};
+
+const checkBaoMing = async () => {
+  const res = await CompetitionUserControllerService.isBaoMingUsingGet(props.id);
+  if (res.code === 0) {
+    baomingRef.value = res.data;
+  } else {
+    message.error(res.message);
+  }
 };
 
 // Calculate countdown value
@@ -76,8 +101,7 @@ const toQuestionListPage = () => {
   router.push({
     path: `/questionList/${props.id}`,
   });
-
-}
+};
 </script>
 
 <style scoped>
@@ -128,4 +152,3 @@ const toQuestionListPage = () => {
   margin-top: 20px;
 }
 </style>
-
